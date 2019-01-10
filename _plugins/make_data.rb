@@ -82,13 +82,25 @@ Jekyll::Hooks.register :site, :after_init do |site|
     players = Hash.new
     Dir.foreach('_data/tournaments') do |tournament_file|
         next if tournament_file == '.' or tournament_file == '..' or tournament_file == 'template.yml.sample'
+        per_tournament = Hash.new
         tournament = YAML.load_file('_data/tournaments/' + tournament_file)
         tournament["players"].each_with_index do |player, index|
             if !players.key?(player["player"])
                 players[player["player"]] = Player.new(player["player"])
+                per_tournament[player["player"]] = Player.new(player["player"])
             end
             players[player["player"]].addScore(calculatePoints(index+1, tournament["players"].length, tournament["date"], tournament["weekend"]), player["points"], player["army"], tournament["title"])
+            per_tournament[player["player"]].addScore(calculatePoints(index+1, tournament["players"].length, tournament["date"], tournament["weekend"]), player["points"], player["army"], tournament["title"])
         end
+        results = Array.new
+        puts per_tournament
+        per_tournament.values.each_with_index do | player, index|
+            results.push({"player"=>player.name, "points"=>player.getScore})
+        end
+        results = results.sort_by { |k| k["points"] }.reverse
+        File.open("_data/test/" + tournament["title"] + ".yml","w") do |file|
+            file.write results.to_yaml
+        end 
     end
 
     results = Array.new

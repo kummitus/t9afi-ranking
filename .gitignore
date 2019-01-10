@@ -3,3 +3,4 @@ _site
 .jekyll-metadata
 _data/tournaments/*.yml
 _data/players.yml
+_data/test
