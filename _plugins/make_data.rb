@@ -42,19 +42,24 @@ class Player
     end
 end
 
-def calculatePoints(position, max, date)
-    if max > 39
+def calculatePoints(position, max, date, weekend)
+    if weekend
+        max_players = (1.40 * max).to_i
+    else
+        max_players = max
+    end
+    if max_players > 39
         if position == 1
             score = 100
         else
-            score = (100-position)/(max-1)
+            score = (100-position)/(max_players-1)
         end
     else
-        new_max = 100-(40-max)
+        new_max = 100-(40-max_players)
         if position == 1
             score = new_max
         else
-            score = new_max-(((new_max-5)/(max-1))*(position-1))
+            score = new_max-(((new_max-5)/(max_players-1))*(position-1))
         end
     end
     if Date.today - Date.parse(date) > 730
@@ -69,13 +74,13 @@ Jekyll::Hooks.register :site, :after_init do |site|
     File.delete('_data/players.yml') if File.exist?('_data/players.yml')
     players = Hash.new
     Dir.foreach('_data/tournaments') do |tournament_file|
-        next if tournament_file == '.' or tournament_file == '..'
+        next if tournament_file == '.' or tournament_file == '..' or tournament_file == 'template.yml.sample'
         tournament = YAML.load_file('_data/tournaments/' + tournament_file)
         tournament["players"].each_with_index do |player, index|
             if !players.key?(player["player"])
                 players[player["player"]] = Player.new(player["player"])
             end
-            players[player["player"]].addScore(calculatePoints(index+1, tournament["players"].length, tournament["date"]), player["points"], player["army"], tournament["title"])
+            players[player["player"]].addScore(calculatePoints(index+1, tournament["players"].length, tournament["date"], tournament["weekend"]), player["points"], player["army"], tournament["title"])
         end
     end
 
