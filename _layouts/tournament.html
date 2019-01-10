@@ -1,0 +1,22 @@
+---
+layout: default
+---
+<a href="{{ page.external_url }}"><h1>{{ page.title }}</h1></a>
+<h2>{{ page.date | date: "%d.%m.%Y" }}</h2>
+<p>{{ page.info }}</p>
+<table>
+<thead>
+    <td>Sija</td>
+    <td>Nimi</td>
+    <td>Pisteet</td>
+    <td>Armeija</td>
+</thead>
+{% for player in page.players  %}
+    <tr>
+        <td>{{ forloop.index }}.</td>
+        <td>{{ player.player }}</td>
+        <td>{{ player.points }}</td>
+        <td>{{ player.army }}</td>
+    </tr>
+{% endfor %}
+</table
