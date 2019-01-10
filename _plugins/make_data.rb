@@ -43,29 +43,36 @@ class Player
 end
 
 def calculatePoints(position, max, date, weekend)
-    if weekend
-        max_players = (1.40 * max).to_i
+    if position == max
+        score = 5
     else
-        max_players = max
-    end
-    if max_players > 39
-        if position == 1
-            score = 100
+        if weekend
+            max_players = (1.40 * max).to_i
+            if max_players > 100
+                max_players = 100
+            end
         else
-            score = (100-position)/(max_players-1)
+            max_players = max
         end
-    else
-        new_max = 100-(40-max_players)
-        if position == 1
-            score = new_max
+        if max_players > 39
+            if position == 1
+                score = 100
+            else
+                score = 100-((100-5)/(max_players-1)*(position-1))
+            end
         else
-            score = new_max-(((new_max-5)/(max_players-1))*(position-1))
+            new_max = 100-(40-max_players)
+            if position == 1
+                score = new_max
+            else
+                score = new_max-(((new_max-5)/(max_players-1))*(position-1))
+            end
         end
-    end
-    if Date.today - Date.parse(date) > 730
-        score = 0
-    elsif Date.today - Date.parse(date) > 365
-        score = score/2
+        if Date.today - Date.parse(date) > 730
+            score = 0
+        elsif Date.today - Date.parse(date) > 365
+            score = score/2
+        end        
     end
     score
 end
