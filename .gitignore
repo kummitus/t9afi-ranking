@@ -1,5 +1,5 @@
 _site
 .sass-cache
 .jekyll-metadata
-_data/tournaments/*
+_data/tournaments/*.yml
 _data/players.yml
