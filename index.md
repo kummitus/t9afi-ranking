@@ -9,14 +9,14 @@ layout: home
 <thead>
     <td>Sija</td>
     <td>Nimi</td>
-    <td>Pisteet</td>
+    <td>Rankingisteet</td>
 </thead>
 {% for player in site.data.players %}
 
     <tr>
         <td>{{ forloop.index }}.</td>
-        <td>{{ player.player }}</td>
-        <td>{{ player.points }}</td>
+        <td><a href="{{ player.player | datapage_url: '/players' }}">{{ player.player }}</a></td>
+        <td>{{ player.points | round }}</td>
     </tr>
 
 {% endfor %}

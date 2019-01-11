@@ -1,23 +1,25 @@
 require 'yaml'
 
 class Tournament
-    def initialize(points, army, tournament)
+    def initialize(points, army, tournament, position)
         @tournament = tournament
         @points = points
         @army = army
+        @position = position  
     end
 end
 
 class Player
 
     def initialize(name)
+        @title = name 
         @name = name
         @tournaments = []
         @points = []
     end
 
-    def addScore(score, points, army, tournament)
-        @tournaments.push(Tournament.new(points, army, tournament))
+    def addScore(score, points, army, tournament, position)
+        @tournaments.push(Tournament.new(points, army, tournament, position))
         @points.push(score)
     end
 
@@ -33,6 +35,10 @@ class Player
         total_points
     end
 
+    def getTournaments
+        @tournaments  
+    end
+
     def name
         @name
     end
@@ -44,7 +50,7 @@ end
 
 def calculatePoints(position, max, date, weekend)
     if position == max
-        score = 5
+        score = 5.0
     else
         if weekend
             max_players = (1.40 * max).to_i
@@ -58,14 +64,14 @@ def calculatePoints(position, max, date, weekend)
             if position == 1
                 score = 100
             else
-                score = 100-((100-5)/(max_players-1)*(position-1))
+                score = 100.0-((100.0-5.0)/(max_players-1.0)*(position-1.0))
             end
         else
             new_max = 100-(40-max_players)
             if position == 1
                 score = new_max
             else
-                score = new_max-(((new_max-5)/(max_players-1))*(position-1))
+                score = new_max-(((new_max-5.0)/(max_players-1.0))*(position-1.0))
             end
         end
         if Date.today - Date.parse(date) > 730
@@ -87,14 +93,13 @@ Jekyll::Hooks.register :site, :after_init do |site|
         tournament["players"].each_with_index do |player, index|
             if !players.key?(player["player"])
                 players[player["player"]] = Player.new(player["player"])
-                per_tournament[player["player"]] = Player.new(player["player"])
             end
-            players[player["player"]].addScore(calculatePoints(index+1, tournament["players"].length, tournament["date"], tournament["weekend"]), player["points"], player["army"], tournament["title"])
-            per_tournament[player["player"]].addScore(calculatePoints(index+1, tournament["players"].length, tournament["date"], tournament["weekend"]), player["points"], player["army"], tournament["title"])
+            per_tournament[player["player"]] = Player.new(player["player"])
+            players[player["player"]].addScore(calculatePoints(index+1, tournament["players"].length, tournament["date"], tournament["weekend"]), player["points"], player["army"], tournament["title"], index+1)
+            per_tournament[player["player"]].addScore(calculatePoints(index+1, tournament["players"].length, tournament["date"], tournament["weekend"]), player["points"], player["army"], tournament["title"], index+1)
         end
         results = Array.new
-        puts per_tournament
-        per_tournament.values.each_with_index do | player, index|
+        per_tournament.each_with_index do | (key, player), index|
             results.push({"player"=>player.name, "points"=>player.getScore})
         end
         results = results.sort_by { |k| k["points"] }.reverse
@@ -110,5 +115,8 @@ Jekyll::Hooks.register :site, :after_init do |site|
     results = results.sort_by { |k| k["points"] }.reverse
     File.open("_data/players.yml","w") do |file|
         file.write results.to_yaml
-   end 
+    end
+    File.open("_data/scores.yml","w") do |file|
+        file.write players.values.to_yaml
+   end
 end

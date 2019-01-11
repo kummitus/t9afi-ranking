@@ -14,7 +14,7 @@ layout: default
 {% for player in page.players  %}
     <tr>
         <td>{{ forloop.index }}.</td>
-        <td>{{ player.player }}</td>
+        <td><a href="{{ player.player | datapage_url: '/players' }}">{{ player.player }}</a></td>
         <td>{{ player.points }}</td>
         <td>{{ player.army }}</td>
     </tr>

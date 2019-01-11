@@ -47,3 +47,9 @@ page_gen:
     template: 'tournament'
     name: 'title'
     dir: 'tournaments'
+
+  - index_files: false
+    data: 'scores'
+    template: 'player'
+    name: 'title'
+    dir: 'players'

@@ -4,3 +4,4 @@ _site
 _data/tournaments/*.yml
 _data/players.yml
 _data/test
+_data/scores.yml

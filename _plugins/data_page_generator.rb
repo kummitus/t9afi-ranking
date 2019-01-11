@@ -72,6 +72,7 @@ module Jekyll
   
         # data contains the specification of the data for which we want to generate
         # the pages (look at the README file for its specification)
+        
         data = site.config['page_gen']
         if data
           data.each do |data_spec|
@@ -86,10 +87,18 @@ module Jekyll
               # for which we want to generate different pages
               records = nil
               data_spec['data'].split('.').each do |level|
-                if records.nil?
-                  records = site.data[level].values
+                if level == "scores"
+                  if records.nil?
+                    records = site.data[level]
+                  else
+                    records = records[level]
+                  end
                 else
-                  records = records[level]
+                  if records.nil?
+                    records = site.data[level].values
+                  else
+                    records = records[level]
+                  end
                 end
               end
   

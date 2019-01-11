@@ -1,0 +1,20 @@
+---
+layout: default
+---
+<h1>{{ page.title }}</h1>
+<table>
+<thead>
+    <td>Turnaus</td>
+    <td>Sija</td>
+    <td>Pelipisteet</td>
+    <td>Armeija</td>
+</thead>
+{% for tournament in page.tournaments  %}
+    <tr>
+        <td><a href="{{ tournament.tournament | datapage_url: '/tournaments' }}">{{ tournament.tournament }}</a></td>
+        <td>{{ tournament.position }}.</td>
+        <td>{{ tournament.points }}</td>
+        <td>{{ tournament.army }}</td>
+    </tr>
+{% endfor %}
+</table
