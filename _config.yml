@@ -40,15 +40,16 @@ plugins:
 #   - vendor/cache/
 #   - vendor/gems/
 #   - vendor/ruby/
+page_gen-dirs: true
 
 page_gen:
-  - index_files: false
+  - index_files: true
     data: 'tournaments'
     template: 'tournament'
     name: 'title'
     dir: 'tournaments'
 
-  - index_files: false
+  - index_files: true
     data: 'scores'
     template: 'player'
     name: 'title'
