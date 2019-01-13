@@ -14,7 +14,74 @@ layout: default
         <td><a href="{{ tournament.tournament | datapage_url: '/tournaments' }}">{{ tournament.tournament }}</a></td>
         <td>{{ tournament.position }}.</td>
         <td>{{ tournament.points }}</td>
-        <td>{{ tournament.army }}</td>
+        <td>            
+            <div class="popup-overlay list-{{ forloop.index }}">
+                <div class="popup-content list-{{ forloop.index }}">
+                    <h1>{{ page.title }}, {{ tournament.army}}</h1>
+                    <p>{{ tournament.list}}</p>
+                    <button class="close">Sulje</button>
+                </div>
+            </div>
+            <a href="#" class="list-open-{{ forloop.index }}">{{ tournament.army }}</a></td>
     </tr>
 {% endfor %}
-</table
+</table>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+{% for tournament in page.tournaments  %}
+<script>
+    $(document).ready(function(e) {
+    // adds "active" class to overlay and content
+    $(".list-open-{{ forloop.index }}").on("click", function(){
+        $(".list-{{ forloop.index }}").addClass("active");
+    });
+    // removes "active" class from overlay and content
+    $(".close").on("click", function(){
+        $(".popup-overlay, .popup-content").removeClass("active");
+    });
+    });
+    </script>
+{% endfor %}
+<style>
+  .popup-overlay {
+    visibility: hidden;
+    position: absolute;
+    background: white;
+    border-color: black;
+    border-width: 2px;
+    border-style: solid;
+    margin: auto;
+    overflow: auto;
+    max-height: 75%;
+    width: 75%;
+    max-width: 700px;
+    min-height: 33%;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.popup-overlay.active {
+  visibility: visible;
+}
+
+.popup-content {
+  visibility: hidden;
+  padding: 10px;
+    overflow: auto;
+    height: auto;
+}
+
+.popup-content.active {
+  visibility: visible;
+  padding: 10px;
+  z-index: 1;
+}
+
+.popup-hold {
+  border: 2px solid black;
+    overflow: auto;
+    height: 400px;
+}
+ </style>

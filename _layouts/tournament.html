@@ -36,7 +36,6 @@ layout: default
     $(document).ready(function(e) {
     // adds "active" class to overlay and content
     $(".list-open-{{ forloop.index }}").on("click", function(){
-        console.log($(this).parent())
         $(".list-{{ forloop.index }}").addClass("active");
     });
     // removes "active" class from overlay and content
@@ -48,15 +47,18 @@ layout: default
 {% endfor %}
 <style>
   .popup-overlay {
-  visibility: hidden;
-  position: absolute;
-  background: white;
-  border-color: black;
-  border-width: 2px;
-  border-style: solid;
-  margin: auto;
-    width: 50%;
-    height: 75%;
+    visibility: hidden;
+    position: absolute;
+    background: white;
+    border-color: black;
+    border-width: 2px;
+    border-style: solid;
+    margin: auto;
+    overflow: auto;
+    max-height: 75%;
+    width: 75%;
+    max-width: 700px;
+    min-height: 33%;
     top:0;
     bottom: 0;
     left: 0;
@@ -65,12 +67,13 @@ layout: default
 
 .popup-overlay.active {
   visibility: visible;
-  z-index: 1;
 }
 
 .popup-content {
   visibility: hidden;
   padding: 10px;
+    overflow: auto;
+    height: auto;
 }
 
 .popup-content.active {
@@ -80,7 +83,8 @@ layout: default
 }
 
 .popup-hold {
-  height: 330px;
   border: 2px solid black;
+    overflow: auto;
+    height: 400px;
 }
  </style>

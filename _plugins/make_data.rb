@@ -1,11 +1,12 @@
 require 'yaml'
 
 class Tournament
-    def initialize(points, army, tournament, position)
+    def initialize(points, army, tournament, position, list)
         @tournament = tournament
         @points = points
         @army = army
         @position = position  
+        @list = list
     end
 end
 
@@ -19,8 +20,8 @@ class Player
         @list = list
     end
 
-    def addScore(score, points, army, tournament, position)
-        @tournaments.push(Tournament.new(points, army, tournament, position))
+    def addScore(score, points, army, tournament, position, list)
+        @tournaments.push(Tournament.new(points, army, tournament, position, list))
         @points.push(score)
     end
 
@@ -100,8 +101,8 @@ Jekyll::Hooks.register :site, :after_init do |site|
                 players[player["player"]] = Player.new(player["player"], player["list"])
             end
             per_tournament[player["player"]] = Player.new(player["player"], player["list"])
-            players[player["player"]].addScore(calculatePoints(index+1, tournament["players"].length, tournament["date"], tournament["weekend"]), player["points"], player["army"], tournament["title"], index+1)
-            per_tournament[player["player"]].addScore(calculatePoints(index+1, tournament["players"].length, tournament["date"], tournament["weekend"]), player["points"], player["army"], tournament["title"], index+1)
+            players[player["player"]].addScore(calculatePoints(index+1, tournament["players"].length, tournament["date"], tournament["weekend"]), player["points"], player["army"], tournament["title"], index+1, player["list"])
+            per_tournament[player["player"]].addScore(calculatePoints(index+1, tournament["players"].length, tournament["date"], tournament["weekend"]), player["points"], player["army"], tournament["title"], index+1, player["list"])
         end
         results = Array.new
         per_tournament.each_with_index do | (key, player), index|
@@ -112,7 +113,6 @@ Jekyll::Hooks.register :site, :after_init do |site|
             file.write results.to_yaml
         end 
     end
-
     results = Array.new
     players.values.each_with_index do | player, index|
         results.push({"player"=>player.name, "points"=>player.getScore})

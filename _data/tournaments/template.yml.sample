@@ -7,3 +7,4 @@ players:
   - player: 
     points: 
     army: 
+    list:
