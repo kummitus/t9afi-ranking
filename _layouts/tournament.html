@@ -16,7 +16,71 @@ layout: default
         <td>{{ forloop.index }}.</td>
         <td><a href="{{ player.player | datapage_url: '/players' }}">{{ player.player }}</a></td>
         <td>{{ player.points }}</td>
-        <td>{{ player.army }}</td>
+        <td>
+            <div class="popup-overlay list-{{ forloop.index }}">
+                <div class="popup-content list-{{ forloop.index }}">
+                    <h1>{{ player.player}}, {{ player.army}}</h1>
+                    <p>{{ player.list}}</p>
+                    <button class="close">Sulje</button>
+                </div>
+            </div>
+            <a href="#" class="list-open-{{ forloop.index }}">{{ player.army }}</a>
+        </td>
+
     </tr>
 {% endfor %}
-</table
+</table>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+{% for player in page.players  %}
+<script>
+    $(document).ready(function(e) {
+    // adds "active" class to overlay and content
+    $(".list-open-{{ forloop.index }}").on("click", function(){
+        console.log($(this).parent())
+        $(".list-{{ forloop.index }}").addClass("active");
+    });
+    // removes "active" class from overlay and content
+    $(".close").on("click", function(){
+        $(".popup-overlay, .popup-content").removeClass("active");
+    });
+    });
+    </script>
+{% endfor %}
+<style>
+  .popup-overlay {
+  visibility: hidden;
+  position: absolute;
+  background: white;
+  border-color: black;
+  border-width: 2px;
+  border-style: solid;
+  margin: auto;
+    width: 50%;
+    height: 75%;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.popup-overlay.active {
+  visibility: visible;
+  z-index: 1;
+}
+
+.popup-content {
+  visibility: hidden;
+  padding: 10px;
+}
+
+.popup-content.active {
+  visibility: visible;
+  padding: 10px;
+  z-index: 1;
+}
+
+.popup-hold {
+  height: 330px;
+  border: 2px solid black;
+}
+ </style>

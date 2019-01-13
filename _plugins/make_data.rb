@@ -11,11 +11,12 @@ end
 
 class Player
 
-    def initialize(name)
+    def initialize(name, list)
         @title = name 
         @name = name
         @tournaments = []
         @points = []
+        @list = list
     end
 
     def addScore(score, points, army, tournament, position)
@@ -45,6 +46,10 @@ class Player
 
     def points
         @points
+    end
+
+    def list
+        @list
     end
 end
 
@@ -92,9 +97,9 @@ Jekyll::Hooks.register :site, :after_init do |site|
         tournament = YAML.load_file('_data/tournaments/' + tournament_file)
         tournament["players"].each_with_index do |player, index|
             if !players.key?(player["player"])
-                players[player["player"]] = Player.new(player["player"])
+                players[player["player"]] = Player.new(player["player"], player["list"])
             end
-            per_tournament[player["player"]] = Player.new(player["player"])
+            per_tournament[player["player"]] = Player.new(player["player"], player["list"])
             players[player["player"]].addScore(calculatePoints(index+1, tournament["players"].length, tournament["date"], tournament["weekend"]), player["points"], player["army"], tournament["title"], index+1)
             per_tournament[player["player"]].addScore(calculatePoints(index+1, tournament["players"].length, tournament["date"], tournament["weekend"]), player["points"], player["army"], tournament["title"], index+1)
         end
