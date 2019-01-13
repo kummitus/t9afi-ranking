@@ -9,16 +9,17 @@ layout: default
     <td>Pelipisteet</td>
     <td>Armeija</td>
 </thead>
-{% for tournament in page.tournaments  %}
+{% assign sorted_tournaments = (page.tournaments | sort: 'date') | reverse %}
+{% for tournament in sorted_tournaments %}
     <tr>
-        <td><a href="{{ tournament.tournament | datapage_url: '/tournaments' }}">{{ tournament.tournament }}</a></td>
+        <td><a href="{{ tournament.tournament | datapage_url: '/tournaments' }}">{{ tournament.tournament }}, {{ tournament.date | date: "%d.%m.%Y" }}</a></td>
         <td>{{ tournament.position }}.</td>
         <td>{{ tournament.points }}</td>
         <td>            
             <div class="popup-overlay list-{{ forloop.index }}">
                 <div class="popup-content list-{{ forloop.index }}">
                     <h1>{{ page.title }}, {{ tournament.army}}</h1>
-                    <p>{{ tournament.list}}</p>
+                    <p class="armylist">{{ tournament.list}}</p>
                     <button class="close">Sulje</button>
                 </div>
             </div>
@@ -83,5 +84,8 @@ layout: default
   border: 2px solid black;
     overflow: auto;
     height: 400px;
+}
+.armylist {
+    white-space: pre-wrap;
 }
  </style>

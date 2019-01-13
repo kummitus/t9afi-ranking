@@ -1,12 +1,13 @@
 require 'yaml'
 
 class Tournament
-    def initialize(points, army, tournament, position, list)
+    def initialize(points, army, tournament, position, list, date)
         @tournament = tournament
         @points = points
         @army = army
         @position = position  
         @list = list
+        @date = date
     end
 end
 
@@ -20,8 +21,8 @@ class Player
         @list = list
     end
 
-    def addScore(score, points, army, tournament, position, list)
-        @tournaments.push(Tournament.new(points, army, tournament, position, list))
+    def addScore(score, points, army, tournament, position, list, date)
+        @tournaments.push(Tournament.new(points, army, tournament, position, list, date))
         @points.push(score)
     end
 
@@ -70,14 +71,14 @@ def calculatePoints(position, max, date, weekend)
             if position == 1
                 score = 100
             else
-                score = 100.0-((100.0-5.0)/(max_players-1.0)*(position-1.0))
+                score = 100.0-((100.0-5.0)/(max-1.0)*(position-1.0))
             end
         else
             new_max = 100-(40-max_players)
             if position == 1
                 score = new_max
             else
-                score = new_max-(((new_max-5.0)/(max_players-1.0))*(position-1.0))
+                score = new_max-(((new_max-5.0)/(max-1.0))*(position-1.0))
             end
         end
         if Date.today - Date.parse(date) > 730
@@ -101,8 +102,8 @@ Jekyll::Hooks.register :site, :after_init do |site|
                 players[player["player"]] = Player.new(player["player"], player["list"])
             end
             per_tournament[player["player"]] = Player.new(player["player"], player["list"])
-            players[player["player"]].addScore(calculatePoints(index+1, tournament["players"].length, tournament["date"], tournament["weekend"]), player["points"], player["army"], tournament["title"], index+1, player["list"])
-            per_tournament[player["player"]].addScore(calculatePoints(index+1, tournament["players"].length, tournament["date"], tournament["weekend"]), player["points"], player["army"], tournament["title"], index+1, player["list"])
+            players[player["player"]].addScore(calculatePoints(index+1, tournament["players"].length, tournament["date"], tournament["weekend"]), player["points"], player["army"], tournament["title"], index+1, player["list"], tournament["date"])
+            per_tournament[player["player"]].addScore(calculatePoints(index+1, tournament["players"].length, tournament["date"], tournament["weekend"]), player["points"], player["army"], tournament["title"], index+1, player["list"], tournament["date"])
         end
         results = Array.new
         per_tournament.each_with_index do | (key, player), index|

@@ -20,7 +20,7 @@ layout: default
             <div class="popup-overlay list-{{ forloop.index }}">
                 <div class="popup-content list-{{ forloop.index }}">
                     <h1>{{ player.player}}, {{ player.army}}</h1>
-                    <p>{{ player.list}}</p>
+                    <p class="armylist">{{ player.list}}</p>
                     <button class="close">Sulje</button>
                 </div>
             </div>
@@ -86,5 +86,8 @@ layout: default
   border: 2px solid black;
     overflow: auto;
     height: 400px;
+}
+.armylist {
+    white-space: pre-wrap;
 }
  </style>
