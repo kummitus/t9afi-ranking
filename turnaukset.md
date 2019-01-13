@@ -6,8 +6,6 @@ layout: page
 title: Turnaukset
 permalink: /tournaments/
 ---
-<h1>Tournaments</h1>
-
 <ul>
 {% for tournament_hash in site.data.tournaments %}
 {% assign tournament = tournament_hash[1] %}
