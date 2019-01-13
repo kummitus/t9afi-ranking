@@ -8,6 +8,7 @@ permalink: /about/
 
 <p>Systeemi on generoitu Jekyll:illä, mukana käytetty soveltaen jekyll-datapage_gen:ia. Ranking pisteet lasketaan <a href="http://the9thagerankings.com/#/info">tämän mukaan</a>, tosin pisteitä on tähän mennessä annettu kaikenkokoisista turnauksista. Turnauksien merkittävyys laskee ekan vuoden jälkeen 50%, ja kokonaan ne tippuvat 2v jälkeen.</p>
 
+<p>Suomen kisajengin menoa voi seurata <a href="https://twitter.com/etct9afinland">Twitterissä</a>.</p>
 
 <p>Linkkejä:</p>
 <p>

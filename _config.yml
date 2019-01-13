@@ -16,10 +16,10 @@
 title: T9AFI Ranking
 email: 
 description: >- # this means to ignore newlines until "baseurl:"
-  Ranking kokeiluija
+  Suomen T9A pelin Rankingit ja turnaukset listoineen
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://t9aranking.hantti.me" # the base hostname & protocol for your site, e.g. http://example.com
-twitter_username: _kummitus
+twitter_username: etct9afinland
 github_username:  kummitus
 
 
