@@ -1,13 +1,6 @@
 ---
-layout: page
-title: Uutiset
+layout: home
+title: Ajankohtaista
 permalink: /news/
+list_title: Uutiset
 ---
-
-<ul>
-  {% for post in site.posts %}
-    <li>
-      <a href="{{ post.url }}">{{ post.title }}, {{ post.date | date: "%d.%m.%Y" }}</a>
-    </li>
-  {% endfor %}
-</ul>
