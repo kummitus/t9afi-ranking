@@ -44,7 +44,7 @@ page_gen-dirs: true
 
 page_gen:
   - index_files: true
-    data: 'tournaments'
+    data: 'output'
     template: 'tournament'
     name: 'title'
     dir: 'tournaments'

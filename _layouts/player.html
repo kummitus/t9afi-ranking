@@ -7,14 +7,16 @@ layout: default
     <td>Turnaus</td>
     <td>Sija</td>
     <td>Pelipisteet</td>
+    <td>Rankingpisteet</td>
     <td>Armeija</td>
 </thead>
-{% assign sorted_tournaments = (page.tournaments | sort: 'date') | reverse %}
+{% assign sorted_tournaments = page.tournaments | sort: 'date' | reverse %}
 {% for tournament in sorted_tournaments %}
     <tr>
         <td><a href="{{ tournament.tournament | datapage_url: '/tournaments' }}">{{ tournament.tournament }}, {{ tournament.date | date: "%d.%m.%Y" }}</a></td>
         <td>{{ tournament.position }}.</td>
         <td>{{ tournament.points }}</td>
+        <td>{{ tournament.score | round }}</td>
         <td>            
             <div class="popup-overlay list-{{ forloop.index }}">
                 <div class="popup-content list-{{ forloop.index }}">

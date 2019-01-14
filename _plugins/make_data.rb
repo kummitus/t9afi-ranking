@@ -1,13 +1,29 @@
 require 'yaml'
 
 class Tournament
-    def initialize(points, army, tournament, position, list, date)
+    def initialize(points, army, tournament, position, list, date, score)
         @tournament = tournament
         @points = points
         @army = army
         @position = position  
         @list = list
         @date = date
+        @score = score
+    end
+    def position
+        @position
+    end
+    def score
+        @score
+    end
+    def points
+        @points
+    end
+    def list
+        @list
+    end
+    def army
+        @army
     end
 end
 
@@ -22,7 +38,7 @@ class Player
     end
 
     def addScore(score, points, army, tournament, position, list, date)
-        @tournaments.push(Tournament.new(points, army, tournament, position, list, date))
+        @tournaments.push(Tournament.new(points, army, tournament, position, list, date, score))
         @points.push(score)
     end
 
@@ -90,11 +106,23 @@ def calculatePoints(position, max, date, weekend)
     score
 end
 
+def sanitize_filename(name)
+    puts name
+    if(name.is_a? Integer)
+      return name.to_s
+    end
+    return name.tr(
+"ÀÁÂÃÄÅàáâãäåĀāĂăĄąÇçĆćĈĉĊċČčÐðĎďĐđÈÉÊËèéêëĒēĔĕĖėĘęĚěĜĝĞğĠġĢģĤĥĦħÌÍÎÏìíîïĨĩĪīĬĭĮįİıĴĵĶķĸĹĺĻļĽľĿŀŁłÑñŃńŅņŇňŉŊŋÑñÒÓÔÕÖØòóôõöøŌōŎŏŐőŔŕŖŗŘřŚśŜŝŞşŠšſŢţŤťŦŧÙÚÛÜùúûüŨũŪūŬŭŮůŰűŲųŴŵÝýÿŶŷŸŹźŻżŽž",
+"AAAAAAaaaaaaAaAaAaCcCcCcCcCcDdDdDdEEEEeeeeEeEeEeEeEeGgGgGgGgHhHhIIIIiiiiIiIiIiIiIiJjKkkLlLlLlLlLlNnNnNnNnnNnNnOOOOOOooooooOoOoOoRrRrRrSsSsSsSssTtTtTtUUUUuuuuUuUuUuUuUuUuWwYyyYyYZzZzZz"
+).downcase.strip.gsub(' ', '-').gsub(/[^\w.-]/, '')
+end
+
 Jekyll::Hooks.register :site, :after_init do |site|
     File.delete('_data/players.yml') if File.exist?('_data/players.yml')
     players = Hash.new
     Dir.foreach('_data/tournaments') do |tournament_file|
         next if tournament_file == '.' or tournament_file == '..' or tournament_file == 'template.yml.sample'
+
         per_tournament = Hash.new
         tournament = YAML.load_file('_data/tournaments/' + tournament_file)
         tournament["players"].each_with_index do |player, index|
@@ -107,11 +135,12 @@ Jekyll::Hooks.register :site, :after_init do |site|
         end
         results = Array.new
         per_tournament.each_with_index do | (key, player), index|
-            results.push({"player"=>player.name, "points"=>player.getScore})
+            results.push({"player"=>player.name, "score"=>player.getScore, "position"=> player.getTournaments[0].position, "points" => player.getTournaments[0].points, "army" => player.getTournaments[0].army, "list" => player.list })
         end
-        results = results.sort_by { |k| k["points"] }.reverse
-        File.open("_data/test/" + tournament["title"] + ".yml","w") do |file|
-            file.write results.to_yaml
+        results = results.sort_by { |k| k["score"] }.reverse
+        per_tournament_all = {"title" => tournament["title"], "date" => tournament["date"], "weekend" => tournament["weekend"], "external_url" => tournament["external_url"], "info" => tournament["info"], "players" => results }
+        File.open("_data/output/" + tournament["date"] + "-" + sanitize_filename(tournament["title"]) + ".yml","w") do |file|
+            file.write per_tournament_all.to_yaml
         end 
     end
     results = Array.new

@@ -9,6 +9,7 @@ layout: default
     <td>Sija</td>
     <td>Nimi</td>
     <td>Pisteet</td>
+    <td>Rankingpisteet</td>
     <td>Armeija</td>
 </thead>
 {% for player in page.players  %}
@@ -16,6 +17,15 @@ layout: default
         <td>{{ forloop.index }}.</td>
         <td><a href="{{ player.player | datapage_url: '/players' }}">{{ player.player }}</a></td>
         <td>{{ player.points }}</td>
+        {% for player_score in site.data.scores %}
+            {% if player.player == player_score.name %}
+                {% for player_tournament in player_score.tournaments %}
+                    {% if page.title == player_tournament.tournament %}
+                        <td>{{ player_tournament.score | round }}</td>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        {% endfor %}
         <td>
             <div class="popup-overlay list-{{ forloop.index }}">
                 <div class="popup-content list-{{ forloop.index }}">
