@@ -4,6 +4,21 @@
 
 layout: home
 ---
+<h2>Uudet turnaukset</h2>
+<ul>
+  {% for post in site.categories["turnaukset"] %}
+    <li>
+      <a href="{{ post.url }}">{{ post.title }}, {{ post.date | date: "%d.%m.%Y" }}</a>
+    </li>
+    {% if forloop.index == 2 %}
+        {% break %}
+    {% endif %}
+  {% endfor %}
+</ul>
+
+<hr>
+<br>
+<h2>Ranking</h2>
 
 <table>
 <thead>
